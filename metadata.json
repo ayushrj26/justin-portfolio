@@ -1,0 +1,8 @@
+{
+  "name": "Remix: Cinematic Video Editor Portfolio",
+  "description": "An immersive, premium, Netflix-inspired portfolio website for a professional video editor and filmmaker featuring category browsing, custom interactive color-grading sliders, and responsive video showreels.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
