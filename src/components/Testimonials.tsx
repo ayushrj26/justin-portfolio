@@ -55,7 +55,7 @@ export default function Testimonials({ onPlayReview }: TestimonialsProps) {
                 {/* Channel Avatar */}
                 <div className="relative w-14 h-14 rounded-full overflow-hidden border border-white/10 shrink-0 group-hover:border-netflix-red/40 transition-colors duration-300 bg-zinc-900 shadow-md">
                   <img 
-                    src="https://res.cloudinary.com/xcwaqcmp/image/upload/v1783414204/channels4_profile_1_lrfxgq.jpg" 
+                    src="https://res.cloudinary.com/xcwaqcmp/image/upload/f_auto,q_auto/v1783414204/channels4_profile_1_lrfxgq.jpg" 
                     alt="Sahil XP Profile Avatar" 
                     className="w-full h-full object-cover filter brightness-[0.95]"
                   />
@@ -120,7 +120,7 @@ export default function Testimonials({ onPlayReview }: TestimonialsProps) {
                 {/* Channel Avatar */}
                 <div className="relative w-14 h-14 rounded-full overflow-hidden border border-white/10 shrink-0 group-hover:border-netflix-red/40 transition-colors duration-300 bg-zinc-900 shadow-md">
                   <img 
-                    src="https://res.cloudinary.com/xcwaqcmp/image/upload/v1783414209/channels4_profile_2_znexju.jpg" 
+                    src="https://res.cloudinary.com/xcwaqcmp/image/upload/f_auto,q_auto/v1783414209/channels4_profile_2_znexju.jpg" 
                     alt="Ayush Bhandari Profile Avatar" 
                     className="w-full h-full object-cover filter brightness-[0.95]"
                   />
@@ -187,10 +187,14 @@ export default function Testimonials({ onPlayReview }: TestimonialsProps) {
           {TESTIMONIALS.map((testimonial, idx) => (
             <motion.div
               key={testimonial.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: idx * 0.1 }}
+              initial={{ 
+                opacity: 0, 
+                x: idx % 3 === 0 ? -50 : idx % 3 === 2 ? 50 : 0,
+                y: idx % 3 === 1 ? 50 : 0
+              }}
+              whileInView={{ opacity: 1, x: 0, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, delay: idx * 0.1, type: 'spring', damping: 20, stiffness: 60 }}
               whileHover={{
                 scale: 1.02,
                 boxShadow: "0 15px 35px rgba(0,0,0,0.8)"

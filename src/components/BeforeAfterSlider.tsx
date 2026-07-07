@@ -16,8 +16,8 @@ interface BeforeAfterSliderProps {
 }
 
 export default function BeforeAfterSlider({
-  beforeImage = "https://res.cloudinary.com/xcwaqcmp/image/upload/v1783418568/Gemini_Generated_Image_wn9598wn9598wn95.00_00_00_00.Still001_apsk9g.png",
-  afterImage = "https://res.cloudinary.com/xcwaqcmp/image/upload/v1783413028/Gemini_Generated_Image_wn9598wn9598wn95uuu_jbqli8.png",
+  beforeImage = "https://res.cloudinary.com/xcwaqcmp/image/upload/f_auto,q_auto/v1783418568/Gemini_Generated_Image_wn9598wn9598wn95.00_00_00_00.Still001_apsk9g.png",
+  afterImage = "https://res.cloudinary.com/xcwaqcmp/image/upload/f_auto,q_auto/v1783413028/Gemini_Generated_Image_wn9598wn9598wn95uuu_jbqli8.png",
   title = "The Cobbler's Workshop",
   description = "Converting desaturated, low-contrast Arri LogC RAW footage of a master leather artisan into a warm, deeply textured theatrical look. Focuses on shadow recovery in organic leather grains, highlight preservation in metallic machinery, and rich skin-tone protection.",
   client = "Artisan Heritage Series",

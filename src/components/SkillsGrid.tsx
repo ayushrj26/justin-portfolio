@@ -117,7 +117,13 @@ export default function SkillsGrid() {
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center text-left">
           
           {/* Left Column - Narrative Title */}
-          <div className="lg:col-span-5 flex flex-col justify-center bg-dark-card/40 border border-white/5 rounded-3xl p-6 md:p-8 apple-stroke-card">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="lg:col-span-5 flex flex-col justify-center bg-dark-card/40 border border-white/5 rounded-3xl p-6 md:p-8 apple-stroke-card"
+          >
             <div className="flex items-center gap-2 mb-3">
               <Hammer className="w-4.5 h-4.5 text-netflix-red" />
               <span className="text-xs font-mono font-bold tracking-widest text-netflix-red uppercase">
@@ -156,7 +162,7 @@ export default function SkillsGrid() {
                 </p>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Column - Skills Bento Grid */}
           <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-5">

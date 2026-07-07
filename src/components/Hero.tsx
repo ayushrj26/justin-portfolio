@@ -45,14 +45,14 @@ export default function Hero({ onWatchShowreel, onViewPortfolio }: HeroProps) {
         <img
           src="https://res.cloudinary.com/xcwaqcmp/image/upload/f_auto,q_auto/JUUUUUSTIIIIIN_xnifs1"
           alt="Cinematic Professional Video Editor Workspace"
-          className="absolute min-w-full min-h-full object-cover scale-110 translate-x-[3%] md:translate-x-[5%] filter brightness-[0.7] contrast-[1.05] saturate-[1.1]"
+          className="absolute min-w-full min-h-full object-cover scale-110 translate-x-[3%] md:translate-x-[5%] filter brightness-[0.88] contrast-[1.02] saturate-[1.1]"
           referrerPolicy="no-referrer"
         />
 
         {/* Immersive cinematic overlay: fades from light black at top to dark deep black at bottom */}
-        <div className="absolute inset-0 bg-gradient-to-t from-dark-bg via-dark-bg/60 to-dark-bg/40 z-10" />
-        <div className="absolute inset-0 bg-gradient-to-r from-dark-bg/95 via-dark-bg/50 to-transparent z-10" />
-        <div className="absolute inset-0 bg-radial-gradient(circle at 30% 50%, transparent, rgba(11,11,11,0.6) 80%) z-10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-dark-bg via-dark-bg/50 to-dark-bg/30 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-dark-bg/90 via-dark-bg/40 to-transparent z-10" />
+        <div className="absolute inset-0 bg-radial-gradient(circle at 30% 50%, transparent, rgba(11,11,11,0.5) 80%) z-10" />
       </div>
 
       {/* Hero Content Wrapper */}

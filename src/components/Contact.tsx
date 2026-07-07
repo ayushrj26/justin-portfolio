@@ -21,7 +21,13 @@ export default function Contact() {
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 w-full">
         
         {/* Cinematic Credits Header */}
-        <div className="text-center max-w-4xl mx-auto mb-16 md:mb-24 flex flex-col gap-6">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-center max-w-4xl mx-auto mb-16 md:mb-24 flex flex-col gap-6"
+        >
           <div className="flex items-center gap-2 justify-center">
             <Sparkles className="w-4.5 h-4.5 text-netflix-red animate-pulse" />
             <span className="text-xs font-mono font-bold tracking-widest text-netflix-red uppercase">
@@ -39,13 +45,17 @@ export default function Contact() {
           <p className="text-sm md:text-base text-gray-400 font-medium max-w-2xl mx-auto leading-relaxed mt-4">
             Currently accepting bookings for high-end digital series, corporate showreels, cinematic documentaries, and retention-focused vertical campaigns.
           </p>
-        </div>
+        </motion.div>
 
         {/* Dynamic Bento Social / Call buttons grid */}
         <div className="grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto mb-20">
           
           {/* Email Card */}
-          <a
+          <motion.a
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
             href="mailto:jatin787678@gmail.com"
             className="flex items-center justify-between p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-netflix-red/30 hover:bg-white/10 text-left transition-all duration-300 group cursor-pointer apple-stroke-card"
           >
@@ -59,10 +69,14 @@ export default function Contact() {
               </div>
             </div>
             <ArrowRight className="w-4 h-4 text-gray-500 group-hover:text-netflix-red group-hover:translate-x-1 transition-all" />
-          </a>
+          </motion.a>
 
           {/* Instagram Card */}
-          <a
+          <motion.a
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
             href="https://www.instagram.com/mehh_comrd/?utm_source=ig_web_button_share_sheet"
             target="_blank"
             rel="noopener noreferrer"
@@ -78,7 +92,7 @@ export default function Contact() {
               </div>
             </div>
             <ArrowRight className="w-4 h-4 text-gray-500 group-hover:text-netflix-red group-hover:translate-x-1 transition-all" />
-          </a>
+          </motion.a>
 
         </div>
 

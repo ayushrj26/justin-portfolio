@@ -5,7 +5,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Play, Film, ArrowLeft, Sparkles, Filter, Sliders, Youtube, Palette, Smartphone, Layers, X, Upload, Loader2, ExternalLink } from 'lucide-react';
+import { Play, Film, ArrowLeft, Sparkles, Filter, Sliders, Youtube, Palette, Smartphone, Layers, X, Upload, Loader2, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
 import { PROJECTS } from '../data';
 import { Project } from '../types';
 
@@ -32,6 +32,38 @@ export default function PortfolioPage({
   const [activeYoutubeId, setActiveYoutubeId] = useState<string>('3c-hKV5g1JM');
   const [customUrlInput, setCustomUrlInput] = useState<string>('');
   const [inputError, setInputError] = useState<string>('');
+
+  // Reusable unified marquee row component with hover pause
+  const PortfolioDraggableRow = ({ children, slideDirection = 'left' }: { children: React.ReactNode, slideDirection?: 'left' | 'right' }) => {
+    const duplicatedChildren = [
+      ...React.Children.toArray(children),
+      ...React.Children.toArray(children),
+      ...React.Children.toArray(children),
+      ...React.Children.toArray(children),
+      ...React.Children.toArray(children),
+      ...React.Children.toArray(children)
+    ];
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.8 }}
+        className="relative group/slider w-full py-4 overflow-hidden"
+      >
+        {/* Cinematic Gradient Mask Fades */}
+        <div className="absolute top-0 bottom-0 left-0 w-12 md:w-20 bg-gradient-to-r from-dark-bg to-transparent pointer-events-none z-20" />
+        <div className="absolute top-0 bottom-0 right-0 w-12 md:w-20 bg-gradient-to-l from-dark-bg to-transparent pointer-events-none z-20" />
+
+        <div className={`flex gap-4 md:gap-6 hover:[animation-play-state:paused] ${
+          slideDirection === 'left' ? 'animate-marquee-left' : 'animate-marquee-right'
+        }`}>
+          {duplicatedChildren}
+        </div>
+      </motion.div>
+    );
+  };
 
   const FEATURED_YOUTUBE_VIDEOS = [
     {
@@ -93,9 +125,9 @@ export default function PortfolioPage({
   ];
 
   // Distribute projects into requested categories precisely
-  const youtubeProjects = projects.filter(p => p.id === 'long-1' || p.id === 'long-3' || (p.category === 'longform' && p.subcategory === 'youtube'));
-  const documentaryProjects = projects.filter(p => p.id === 'feat-3' || p.id === 'long-2' || p.id === 'feat-1' || (p.category === 'longform' && p.subcategory === 'documentary') || (p.category === 'featured' && p.id.startsWith('uploaded-')));
-  const motionProjects = projects.filter(p => p.category === 'motion' || p.id === 'feat-2');
+  const youtubeProjects = projects.filter(p => p.subcategory === 'youtube');
+  const documentaryProjects = projects.filter(p => p.subcategory === 'documentary' || (p.category === 'featured' && p.id.startsWith('uploaded-')));
+  const motionProjects = projects.filter(p => p.category === 'motion');
   const gradingProjects = projects.filter(p => p.category === 'grading');
   const shortProjects = projects.filter(p => p.category === 'shortform');
   const freestyleProjects = projects.filter(p => p.category === 'freestyle');
@@ -133,16 +165,16 @@ export default function PortfolioPage({
         {/* Headings */}
         <div className="mb-16">
           <div className="flex items-center gap-2 mb-3">
-            <Film className="w-4 h-4 text-netflix-red" />
+            <Film className="w-4 h-4 text-netflix-red animate-pulse" />
             <span className="text-xs font-mono font-bold tracking-widest text-netflix-red uppercase">
-              THE FULL GALLERY
+              THE PREVIEW GALLERY
             </span>
           </div>
           <h1 className="text-4xl md:text-6xl font-display font-black text-white tracking-tight leading-none">
-            Justin's Portfolio <span className="text-transparent bg-clip-text bg-gradient-to-r from-netflix-red to-white neon-glow-red">Vault.</span>
+            Justin's Director & <span className="text-transparent bg-clip-text bg-gradient-to-r from-netflix-red to-white neon-glow-red">Colorist Showcase.</span>
           </h1>
-          <p className="text-gray-400 text-sm md:text-base mt-4 max-w-2xl">
-            Explore premium cinematic narratives, retention-optimized short-form edits, high-energy trailers, and flawless technical color grading studies.
+          <p className="text-gray-400 text-sm md:text-base mt-4 max-w-2xl leading-relaxed">
+            Explore premium cinematic narratives, retention-optimized short-form reels, high-energy automotive freestyle montages, and state-of-the-art color grading showcases.
           </p>
         </div>
 
@@ -379,7 +411,7 @@ export default function PortfolioPage({
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
-                  className="space-y-8"
+                  className="space-y-6"
                 >
                   <div className="flex items-center justify-between border-b border-white/5 pb-4">
                     <div className="flex items-center gap-3">
@@ -388,9 +420,9 @@ export default function PortfolioPage({
                       </div>
                       <div>
                         <h2 className="text-lg md:text-xl font-display font-black text-white tracking-tight uppercase">
-                          1. YouTube Videos
+                          1. YouTube & Retention Edits
                         </h2>
-                        <p className="text-gray-400 text-xs mt-0.5">High-retention storytelling, cozy editing loops, and strategic pacing</p>
+                        <p className="text-gray-400 text-xs mt-0.5">Pacing, rhythm, and structural sound design optimized for peak audience watch time.</p>
                       </div>
                     </div>
                     <span className="text-xs font-mono text-gray-500 uppercase tracking-widest bg-white/5 px-2.5 py-1 rounded">
@@ -398,41 +430,16 @@ export default function PortfolioPage({
                     </span>
                   </div>
 
-                  {/* Continuous Marquee Row for YouTube Content */}
-                  <div className="relative flex items-center gap-4 md:gap-5 overflow-hidden py-4 w-full">
-                    {onUpload && (
-                      <div className="flex-shrink-0 z-30">
-                        <UploadCard
-                          onUpload={(file) => onUpload(file, 'longform', 'youtube')}
-                          isUploading={uploadingCategory === 'longform' && uploadingSubcategory === 'youtube'}
-                          isVertical={false}
-                          title="Upload YouTube Edit"
-                        />
-                      </div>
-                    )}
-
-                    <div className="flex-grow overflow-hidden select-none relative z-10">
-                      {/* Cinematic Gradient Mask Fades */}
-                      <div className="absolute top-0 bottom-0 left-0 w-12 md:w-20 bg-gradient-to-r from-dark-bg to-transparent pointer-events-none z-20" />
-                      <div className="absolute top-0 bottom-0 right-0 w-12 md:w-20 bg-gradient-to-l from-dark-bg to-transparent pointer-events-none z-20" />
-
-                      <div className="flex gap-4 md:gap-5 animate-marquee-right hover:[animation-play-state:paused]">
-                        {[
-                          ...youtubeProjects,
-                          ...youtubeProjects,
-                          ...youtubeProjects,
-                          ...youtubeProjects
-                        ].map((project, idx) => (
-                          <PortfolioProjectCard
-                            key={`${project.id}-youtube-${idx}`}
-                            project={project}
-                            onSelect={onProjectSelect}
-                            onRemove={onRemoveProject}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+                  <PortfolioDraggableRow slideDirection="left">
+                    {youtubeProjects.map((project) => (
+                      <PortfolioProjectCard
+                        key={project.id}
+                        project={project}
+                        onSelect={onProjectSelect}
+                        shineBorder={true}
+                      />
+                    ))}
+                  </PortfolioDraggableRow>
                 </motion.section>
               )}
 
@@ -442,7 +449,7 @@ export default function PortfolioPage({
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
-                  className="space-y-8"
+                  className="space-y-6"
                 >
                   <div className="flex items-center justify-between border-b border-white/5 pb-4">
                     <div className="flex items-center gap-3">
@@ -451,9 +458,9 @@ export default function PortfolioPage({
                       </div>
                       <div>
                         <h2 className="text-lg md:text-xl font-display font-black text-white tracking-tight uppercase">
-                          2. Cinematic Documentaries
+                          2. Cinematic Documentaries & Features
                         </h2>
-                        <p className="text-gray-400 text-xs mt-0.5">Epic landscapes, deep narrative continuity, and atmospheric foley art</p>
+                        <p className="text-gray-400 text-xs mt-0.5">Immersive visuals, rich color mapping, and detailed soundscapes built for narrative scale.</p>
                       </div>
                     </div>
                     <span className="text-xs font-mono text-gray-500 uppercase tracking-widest bg-white/5 px-2.5 py-1 rounded">
@@ -461,41 +468,16 @@ export default function PortfolioPage({
                     </span>
                   </div>
 
-                  {/* Continuous Marquee Row for Documentaries */}
-                  <div className="relative flex items-center gap-4 md:gap-5 overflow-hidden py-4 w-full">
-                    {onUpload && (
-                      <div className="flex-shrink-0 z-30">
-                        <UploadCard
-                          onUpload={(file) => onUpload(file, 'longform', 'documentary')}
-                          isUploading={uploadingCategory === 'longform' && uploadingSubcategory === 'documentary'}
-                          isVertical={false}
-                          title="Upload Documentary"
-                        />
-                      </div>
-                    )}
-
-                    <div className="flex-grow overflow-hidden select-none relative z-10">
-                      {/* Cinematic Gradient Mask Fades */}
-                      <div className="absolute top-0 bottom-0 left-0 w-12 md:w-20 bg-gradient-to-r from-dark-bg to-transparent pointer-events-none z-20" />
-                      <div className="absolute top-0 bottom-0 right-0 w-12 md:w-20 bg-gradient-to-l from-dark-bg to-transparent pointer-events-none z-20" />
-
-                      <div className="flex gap-4 md:gap-5 animate-marquee-right hover:[animation-play-state:paused]">
-                        {[
-                          ...documentaryProjects,
-                          ...documentaryProjects,
-                          ...documentaryProjects,
-                          ...documentaryProjects
-                        ].map((project, idx) => (
-                          <PortfolioProjectCard
-                            key={`${project.id}-documentary-${idx}`}
-                            project={project}
-                            onSelect={onProjectSelect}
-                            onRemove={onRemoveProject}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+                  <PortfolioDraggableRow slideDirection="right">
+                    {documentaryProjects.map((project) => (
+                      <PortfolioProjectCard
+                        key={project.id}
+                        project={project}
+                        onSelect={onProjectSelect}
+                        shineBorder={true}
+                      />
+                    ))}
+                  </PortfolioDraggableRow>
                 </motion.section>
               )}
 
@@ -505,7 +487,7 @@ export default function PortfolioPage({
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
-                  className="space-y-8"
+                  className="space-y-6"
                 >
                   <div className="flex items-center justify-between border-b border-white/5 pb-4">
                     <div className="flex items-center gap-3">
@@ -516,7 +498,7 @@ export default function PortfolioPage({
                         <h2 className="text-lg md:text-xl font-display font-black text-white tracking-tight uppercase">
                           3. Motion Graphics & VFX
                         </h2>
-                        <p className="text-gray-400 text-xs mt-0.5">High-energy sync edits, 3D fluid dynamics, and branding loops</p>
+                        <p className="text-gray-400 text-xs mt-0.5">Dynamic typography, 2D vector elements, and customized product showcase transitions.</p>
                       </div>
                     </div>
                     <span className="text-xs font-mono text-gray-500 uppercase tracking-widest bg-white/5 px-2.5 py-1 rounded">
@@ -524,36 +506,16 @@ export default function PortfolioPage({
                     </span>
                   </div>
 
-                  {/* Continuous Marquee Row for Motion Graphics */}
-                  <div className="relative flex items-center gap-4 md:gap-5 overflow-hidden py-4 w-full">
-                    {onUpload && (
-                      <div className="flex-shrink-0 z-30">
-                        <UploadCard
-                          onUpload={(file) => onUpload(file, 'motion')}
-                          isUploading={uploadingCategory === 'motion' && !uploadingSubcategory}
-                          isVertical={false}
-                          title="Upload Motion / VFX"
-                        />
-                      </div>
-                    )}
-
-                    <div className="flex-grow overflow-hidden select-none relative z-10">
-                      {/* Cinematic Gradient Mask Fades */}
-                      <div className="absolute top-0 bottom-0 left-0 w-12 md:w-20 bg-gradient-to-r from-dark-bg to-transparent pointer-events-none z-20" />
-                      <div className="absolute top-0 bottom-0 right-0 w-12 md:w-20 bg-gradient-to-l from-dark-bg to-transparent pointer-events-none z-20" />
-
-                      <div className="flex gap-4 md:gap-5 animate-marquee-right hover:[animation-play-state:paused]">
-                        {[...motionProjects, ...motionProjects, ...motionProjects, ...motionProjects].map((project, idx) => (
-                          <PortfolioProjectCard
-                            key={`${project.id}-motion-${idx}`}
-                            project={project}
-                            onSelect={onProjectSelect}
-                            onRemove={onRemoveProject}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+                  <PortfolioDraggableRow slideDirection="left">
+                    {motionProjects.map((project) => (
+                      <PortfolioProjectCard
+                        key={project.id}
+                        project={project}
+                        onSelect={onProjectSelect}
+                        shineBorder={true}
+                      />
+                    ))}
+                  </PortfolioDraggableRow>
                 </motion.section>
               )}
 
@@ -563,7 +525,7 @@ export default function PortfolioPage({
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
-                  className="space-y-8"
+                  className="space-y-6"
                 >
                   <div className="flex items-center justify-between border-b border-white/5 pb-4">
                     <div className="flex items-center gap-3">
@@ -574,7 +536,7 @@ export default function PortfolioPage({
                         <h2 className="text-lg md:text-xl font-display font-black text-white tracking-tight uppercase">
                           4. Color Grading Showcases
                         </h2>
-                        <p className="text-gray-400 text-xs mt-0.5">Theatrical log LUT matching, film emulation, and skin-tone perfection</p>
+                        <p className="text-gray-400 text-xs mt-0.5">Theatrical log LUT matching, Kodak film emulation, and premium skin-tone preservation.</p>
                       </div>
                     </div>
                     <span className="text-xs font-mono text-gray-500 uppercase tracking-widest bg-white/5 px-2.5 py-1 rounded">
@@ -582,36 +544,16 @@ export default function PortfolioPage({
                     </span>
                   </div>
 
-                  {/* Continuous Marquee Row for Color Grading */}
-                  <div className="relative flex items-center gap-4 md:gap-5 overflow-hidden py-4 w-full">
-                    {onUpload && (
-                      <div className="flex-shrink-0 z-30">
-                        <UploadCard
-                          onUpload={(file) => onUpload(file, 'grading')}
-                          isUploading={uploadingCategory === 'grading'}
-                          isVertical={false}
-                          title="Upload Grading Study"
-                        />
-                      </div>
-                    )}
-
-                    <div className="flex-grow overflow-hidden select-none relative z-10">
-                      {/* Cinematic Gradient Mask Fades */}
-                      <div className="absolute top-0 bottom-0 left-0 w-12 md:w-20 bg-gradient-to-r from-dark-bg to-transparent pointer-events-none z-20" />
-                      <div className="absolute top-0 bottom-0 right-0 w-12 md:w-20 bg-gradient-to-l from-dark-bg to-transparent pointer-events-none z-20" />
-
-                      <div className="flex gap-4 md:gap-5 animate-marquee-right hover:[animation-play-state:paused]">
-                        {[...gradingProjects, ...gradingProjects, ...gradingProjects, ...gradingProjects].map((project, idx) => (
-                          <PortfolioProjectCard
-                            key={`${project.id}-grading-${idx}`}
-                            project={project}
-                            onSelect={onProjectSelect}
-                            onRemove={onRemoveProject}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+                  <PortfolioDraggableRow slideDirection="right">
+                    {gradingProjects.map((project) => (
+                      <PortfolioProjectCard
+                        key={project.id}
+                        project={project}
+                        onSelect={onProjectSelect}
+                        shineBorder={true}
+                      />
+                    ))}
+                  </PortfolioDraggableRow>
                 </motion.section>
               )}
 
@@ -624,7 +566,7 @@ export default function PortfolioPage({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="space-y-8 pt-6"
+              className="space-y-6 pt-6"
             >
               <div className="flex items-center justify-between border-b border-white/5 pb-4">
                 <div className="flex items-center gap-3">
@@ -633,9 +575,9 @@ export default function PortfolioPage({
                   </div>
                   <div>
                     <h2 className="text-lg md:text-xl font-display font-black text-white tracking-tight uppercase">
-                      Short Form & Vertical Reels
+                      5. Short Form & Vertical Reels
                     </h2>
-                    <p className="text-gray-400 text-xs mt-0.5">9:16 vertical edits optimized for TikTok, Instagram Reels, and YouTube Shorts</p>
+                    <p className="text-gray-400 text-xs mt-0.5">High-retention 9:16 vertical hooks, captions, and loops designed to capture attention instantly.</p>
                   </div>
                 </div>
                 <span className="text-xs font-mono text-gray-500 uppercase tracking-widest bg-white/5 px-2.5 py-1 rounded">
@@ -643,36 +585,16 @@ export default function PortfolioPage({
                 </span>
               </div>
 
-              {/* Continuous Marquee Row for Short Form Reels */}
-              <div className="relative flex items-center gap-4 md:gap-5 overflow-hidden py-4 w-full">
-                {onUpload && (
-                  <div className="flex-shrink-0 z-30">
-                    <UploadCard
-                      onUpload={(file) => onUpload(file, 'shortform')}
-                      isUploading={uploadingCategory === 'shortform'}
-                      isVertical={true}
-                      title="Upload Vertical Reel"
-                    />
-                  </div>
-                )}
-
-                <div className="flex-grow overflow-hidden select-none relative z-10">
-                  {/* Cinematic Gradient Mask Fades */}
-                  <div className="absolute top-0 bottom-0 left-0 w-12 md:w-20 bg-gradient-to-r from-dark-bg to-transparent pointer-events-none z-20" />
-                  <div className="absolute top-0 bottom-0 right-0 w-12 md:w-20 bg-gradient-to-l from-dark-bg to-transparent pointer-events-none z-20" />
-
-                  <div className="flex gap-4 md:gap-5 animate-marquee-right hover:[animation-play-state:paused]">
-                    {[...shortProjects, ...shortProjects, ...shortProjects, ...shortProjects].map((project, idx) => (
-                      <PortfolioProjectCard
-                        key={`${project.id}-short-${idx}`}
-                        project={project}
-                        onSelect={onProjectSelect}
-                        onRemove={onRemoveProject}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
+              <PortfolioDraggableRow slideDirection="left">
+                {shortProjects.map((project) => (
+                  <PortfolioProjectCard
+                    key={project.id}
+                    project={project}
+                    onSelect={onProjectSelect}
+                    shineBorder={true}
+                  />
+                ))}
+              </PortfolioDraggableRow>
             </motion.section>
           )}
 
@@ -682,7 +604,7 @@ export default function PortfolioPage({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.5 }}
-              className="space-y-8 pt-6"
+              className="space-y-6 pt-6"
             >
               <div className="flex items-center justify-between border-b border-white/5 pb-4">
                 <div className="flex items-center gap-3">
@@ -691,9 +613,9 @@ export default function PortfolioPage({
                   </div>
                   <div>
                     <h2 className="text-lg md:text-xl font-display font-black text-white tracking-tight uppercase">
-                      Freestyle Edits & Hype Montages
+                      6. Freestyle Edits & Hype Montages
                     </h2>
-                    <p className="text-gray-400 text-xs mt-0.5">High-energy anime cuts, retro synth aesthetics, and extreme audio-visual synchronization</p>
+                    <p className="text-gray-400 text-xs mt-0.5">Automotive and sport visual styling, retro synthwave aesthetics, and precise audio sync.</p>
                   </div>
                 </div>
                 <span className="text-xs font-mono text-gray-500 uppercase tracking-widest bg-white/5 px-2.5 py-1 rounded">
@@ -701,36 +623,16 @@ export default function PortfolioPage({
                 </span>
               </div>
 
-              {/* Continuous Marquee Row for Freestyle Edits */}
-              <div className="relative flex items-center gap-4 md:gap-5 overflow-hidden py-4 w-full">
-                {onUpload && (
-                  <div className="flex-shrink-0 z-30">
-                    <UploadCard
-                      onUpload={(file) => onUpload(file, 'freestyle')}
-                      isUploading={uploadingCategory === 'freestyle'}
-                      isVertical={true}
-                      title="Upload Freestyle Edit"
-                    />
-                  </div>
-                )}
-
-                <div className="flex-grow overflow-hidden select-none relative z-10">
-                  {/* Cinematic Gradient Mask Fades */}
-                  <div className="absolute top-0 bottom-0 left-0 w-12 md:w-20 bg-gradient-to-r from-dark-bg to-transparent pointer-events-none z-20" />
-                  <div className="absolute top-0 bottom-0 right-0 w-12 md:w-20 bg-gradient-to-l from-dark-bg to-transparent pointer-events-none z-20" />
-
-                  <div className="flex gap-4 md:gap-5 animate-marquee-right hover:[animation-play-state:paused]">
-                    {[...freestyleProjects, ...freestyleProjects, ...freestyleProjects, ...freestyleProjects].map((project, idx) => (
-                      <PortfolioProjectCard
-                        key={`${project.id}-freestyle-${idx}`}
-                        project={project}
-                        onSelect={onProjectSelect}
-                        onRemove={onRemoveProject}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
+              <PortfolioDraggableRow slideDirection="right">
+                {freestyleProjects.map((project) => (
+                  <PortfolioProjectCard
+                    key={project.id}
+                    project={project}
+                    onSelect={onProjectSelect}
+                    shineBorder={true}
+                  />
+                ))}
+              </PortfolioDraggableRow>
             </motion.section>
           )}
 
@@ -873,85 +775,70 @@ function UploadCard({
   );
 }
 
-/* Card Component with state & continuous loop autoplaying video */
+/* Card Component with state & hover play / hover controls logic */
 function PortfolioProjectCard({
   project,
   onSelect,
-  onRemove
+  shineBorder = false
 }: {
   project: Project;
   onSelect: (project: Project) => void;
   onRemove?: (id: string) => void;
+  shineBorder?: boolean;
   key?: string;
 }) {
   const [isHovered, setIsHovered] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch((err) => {
-        console.log("Autoplay failed or was prevented:", err);
-      });
-    }
-  }, [project.videoUrl]);
 
   const isVertical = project.category === 'shortform' || project.category === 'freestyle';
 
-  return (
-    <div
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={() => onSelect(project)}
-      className={`group relative bg-white/5 border border-white/5 rounded-2xl overflow-hidden cursor-pointer hover:border-netflix-red/30 hover:bg-white/10 transition-all duration-500 shadow-xl apple-stroke-card flex-shrink-0 ${
-        isVertical ? 'w-[180px] sm:w-[220px]' : 'w-[280px] sm:w-[360px]'
-      }`}
-    >
+  const innerContent = (
+    <>
       {/* Visual Canvas Wrapper with precise Aspect Ratio */}
       <div
-        className={`relative w-full overflow-hidden bg-dark-card border-b border-white/5 transition-all duration-500 ${
-          isVertical ? 'aspect-[9/16]' : 'aspect-video'
+        className={`overflow-hidden bg-dark-card border-b border-white/5 transition-all duration-500 ${
+          isHovered 
+            ? 'absolute inset-0 z-0 w-full h-full' 
+            : `relative w-full ${isVertical ? 'aspect-[9/16]' : 'aspect-video'}`
         }`}
       >
-        {/* Dynamic Video loop (always autoplaying) */}
-        <video
-          ref={videoRef}
-          src={project.videoUrl}
-          muted
-          loop
-          playsInline
-          autoPlay
-          className="absolute inset-0 transition-opacity duration-500 opacity-100"
-          style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-        />
+        {/* Lazy-mount video element on hover, otherwise show lightweight thumbnail image */}
+        {isHovered ? (
+          <video
+            src={`${project.videoUrl}#t=2`}
+            muted
+            loop
+            playsInline
+            autoPlay
+            controls
+            className="absolute inset-0 w-full h-full object-cover z-0"
+          />
+        ) : (
+          <img
+            src={project.thumbnailUrl}
+            alt={project.title}
+            className="absolute inset-0 w-full h-full object-cover z-0 filter brightness-[0.85] contrast-[1.02]"
+            loading="lazy"
+          />
+        )}
 
-        {/* Video Overlay Tint */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-70 z-10" />
+        {/* Video Overlay Tint (Hidden on hover when controls are active for clean interaction) */}
+        <div className={`absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent transition-opacity duration-300 z-10 ${
+          isHovered ? 'opacity-0 pointer-events-none' : 'opacity-70'
+        }`} />
 
         {/* Floating duration and views stats */}
-        <div className="absolute top-3 right-3 flex gap-2 z-20">
+        <div className={`absolute top-3 right-3 flex gap-2 z-20 transition-opacity duration-300 ${
+          isHovered ? 'opacity-0 pointer-events-none' : 'opacity-100'
+        }`}>
           <span className="text-[10px] font-mono font-bold bg-black/60 backdrop-blur-md px-2 py-1 rounded text-white border border-white/10">
             {project.duration}
           </span>
         </div>
 
-        {/* Delete button option */}
-        {onRemove && (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onRemove(project.id);
-            }}
-            title="Remove Video"
-            className={`absolute top-3 left-3 z-30 w-7 h-7 rounded-full bg-black/70 hover:bg-netflix-red hover:scale-110 text-white flex items-center justify-center border border-white/10 transition-all duration-300 ${
-              isHovered ? 'opacity-100' : 'opacity-0 pointer-events-none'
-            }`}
-          >
-            <X className="w-3.5 h-3.5" />
-          </button>
-        )}
-
         {/* Play Icon Overlay */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+        <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 z-20 pointer-events-none ${
+          isHovered ? 'opacity-0' : 'opacity-0 group-hover:opacity-100'
+        }`}>
           <div className="w-12 h-12 rounded-full bg-netflix-red flex items-center justify-center shadow-lg transform scale-90 group-hover:scale-100 transition-transform duration-300">
             <Play className="w-5 h-5 text-white fill-white translate-x-0.5" />
           </div>
@@ -959,16 +846,20 @@ function PortfolioProjectCard({
       </div>
 
       {/* Info Panel */}
-      <div className="p-6 text-left">
-        <span className="text-[10px] font-mono font-black text-netflix-red tracking-widest uppercase block mb-1">
-          {project.client}
-        </span>
-        <h3 className="text-lg font-bold text-white mb-2 group-hover:text-netflix-red transition-colors line-clamp-1 leading-tight">
-          {project.title}
-        </h3>
-        <p className="text-gray-400 text-xs line-clamp-2 leading-relaxed mb-4">
-          {project.description}
-        </p>
+      <div className={`p-6 text-left flex-grow flex flex-col justify-between transition-all duration-300 ${
+        isHovered ? 'opacity-0 pointer-events-none' : 'opacity-100'
+      }`}>
+        <div>
+          <span className="text-[10px] font-mono font-black text-netflix-red tracking-widest uppercase block mb-1">
+            {project.client}
+          </span>
+          <h3 className="text-lg font-bold text-white mb-2 group-hover:text-netflix-red transition-colors line-clamp-1 leading-tight">
+            {project.title}
+          </h3>
+          <p className="text-gray-400 text-xs line-clamp-2 leading-relaxed mb-4">
+            {project.description}
+          </p>
+        </div>
 
         {/* Metadata tags */}
         <div className="flex flex-wrap gap-1.5 mt-auto">
@@ -982,6 +873,41 @@ function PortfolioProjectCard({
           ))}
         </div>
       </div>
+    </>
+  );
+
+  if (shineBorder) {
+    return (
+      <div
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className={`group relative p-[1.5px] overflow-hidden rounded-2xl cursor-default transition-all duration-500 shadow-xl flex-shrink-0 bg-white/5 hover:bg-white/10 ${
+          isVertical ? 'w-[200px] sm:w-[250px]' : 'w-[320px] sm:w-[420px]'
+        } ${isHovered ? 'shadow-[0_20px_40px_rgba(229,9,20,0.35)] -translate-y-2 scale-[1.03] z-20' : 'translate-y-0'}`}
+      >
+        <div
+          className="absolute inset-[-150%] animate-spin pointer-events-none z-0"
+          style={{
+            background: 'conic-gradient(from 0deg, transparent 35%, #E50914 45%, #ffffff 50%, #E50914 55%, transparent 65%)',
+            animationDuration: '4s',
+          }}
+        />
+        <div className="relative z-10 w-full h-full bg-[#141414] rounded-[14.5px] overflow-hidden flex flex-col">
+          {innerContent}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className={`group relative bg-white/5 border border-white/5 rounded-2xl overflow-hidden cursor-default hover:border-netflix-red/30 hover:bg-white/10 transition-all duration-500 shadow-xl apple-stroke-card flex-shrink-0 ${
+        isVertical ? 'w-[200px] sm:w-[250px]' : 'w-[320px] sm:w-[420px]'
+      } ${isHovered ? 'shadow-[0_20px_40px_rgba(229,9,20,0.35)] -translate-y-2 scale-[1.03] z-20' : 'translate-y-0'}`}
+    >
+      {innerContent}
     </div>
   );
 }

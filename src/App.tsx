@@ -261,14 +261,14 @@ export default function App() {
   );
 
   // Filter projects by category
-  const featuredProjects = allProjects.filter(p => p.category === 'featured');
-  const longFormProjects = allProjects.filter(p => p.category === 'longform');
-  const shortFormProjects = allProjects.filter(p => p.category === 'shortform');
-  const motionProjects = allProjects.filter(p => p.category === 'motion');
+  const featuredProjects = PROJECTS.filter(p => p.category === 'featured');
+  const longFormProjects = PROJECTS.filter(p => p.category === 'longform');
+  const shortFormProjects = PROJECTS.filter(p => p.category === 'shortform');
+  const motionProjects = PROJECTS.filter(p => p.category === 'motion');
 
   // Trigger main showreel modal
   const handleOpenGeneralShowreel = () => {
-    setActiveShowreelUrl("https://res.cloudinary.com/xcwaqcmp/video/upload/v1783445614/SHOWREEL_2026_bks9du.mp4");
+    setActiveShowreelUrl("https://res.cloudinary.com/xcwaqcmp/video/upload/v1783454091/SHOWREEL_2026_s5fbxt.mp4");
     setActiveShowreelTitle("2026 Director Showreel Masterpiece");
     setShowreelOpen(true);
   };
@@ -423,9 +423,9 @@ export default function App() {
                 title="Spotlight Masterpieces"
                 projects={featuredProjects}
                 onProjectSelect={setSelectedProject}
-                onUpload={(file) => handleUploadVideo(file, 'featured')}
-                isUploading={uploadingCategory === 'featured'}
-                onRemoveProject={handleRemoveProject}
+                isDraggable={true}
+                shineBorder={true}
+                slideDirection="left"
               />
 
               {/* Row 2: DOCUMENTARIES & COZY LECTURES */}
@@ -434,9 +434,9 @@ export default function App() {
                 projects={longFormProjects}
                 layout="horizontal"
                 onProjectSelect={setSelectedProject}
-                onUpload={(file) => handleUploadVideo(file, 'longform')}
-                isUploading={uploadingCategory === 'longform'}
-                onRemoveProject={handleRemoveProject}
+                isDraggable={true}
+                shineBorder={true}
+                slideDirection="right"
               />
 
               {/* Row 3: SHORT FORM VERTICAL REELS */}
@@ -445,9 +445,9 @@ export default function App() {
                 projects={shortFormProjects}
                 layout="vertical"
                 onProjectSelect={setSelectedProject}
-                onUpload={(file) => handleUploadVideo(file, 'shortform')}
-                isUploading={uploadingCategory === 'shortform'}
-                onRemoveProject={handleRemoveProject}
+                isDraggable={true}
+                shineBorder={true}
+                slideDirection="left"
               />
 
               {/* Row 4: MOTION GRAPHICS & SOUND FX */}
@@ -456,9 +456,9 @@ export default function App() {
                 projects={motionProjects}
                 layout="horizontal"
                 onProjectSelect={setSelectedProject}
-                onUpload={(file) => handleUploadVideo(file, 'motion')}
-                isUploading={uploadingCategory === 'motion'}
-                onRemoveProject={handleRemoveProject}
+                isDraggable={true}
+                shineBorder={true}
+                slideDirection="right"
               />
 
               {/* Dynamic Color-Grading Slider Highlight (Bento Box inside Rows) */}
@@ -500,7 +500,7 @@ export default function App() {
             <PortfolioPage
               onBackToHome={() => setActiveView('home')}
               onProjectSelect={setSelectedProject}
-              projects={allProjects}
+              projects={PROJECTS}
               onRemoveProject={handleRemoveProject}
               onUpload={handleUploadVideo}
               uploadingCategory={uploadingCategory}

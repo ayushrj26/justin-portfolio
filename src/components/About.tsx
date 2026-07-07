@@ -121,7 +121,13 @@ export default function About({ detailed = false }: AboutProps) {
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center text-left mb-24">
           
           {/* Left Column - Large Stylized Portrait */}
-          <div className="lg:col-span-5 relative group">
+          <motion.div
+            initial={{ opacity: 0, x: -60 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="lg:col-span-5 relative group"
+          >
             <div className="absolute -inset-2 bg-gradient-to-r from-netflix-red to-blue-500 rounded-3xl opacity-20 group-hover:opacity-40 blur-xl transition-all duration-700" />
             
             <div className="relative aspect-[3/4] w-full bg-dark-card rounded-2xl overflow-hidden border border-white/10 shadow-2xl apple-stroke-card">
@@ -148,10 +154,16 @@ export default function About({ detailed = false }: AboutProps) {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Column - Who I Am & Vision */}
-          <div className="lg:col-span-7 flex flex-col justify-center bg-dark-card/40 border border-white/5 rounded-3xl p-6 md:p-10 apple-stroke-card">
+          <motion.div
+            initial={{ opacity: 0, x: 60 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="lg:col-span-7 flex flex-col justify-center bg-dark-card/40 border border-white/5 rounded-3xl p-6 md:p-10 apple-stroke-card"
+          >
             <div className="flex items-center gap-2 mb-3">
               <Flame className="w-4.5 h-4.5 text-netflix-red" />
               <span className="text-xs font-mono font-bold tracking-widest text-netflix-red uppercase">
@@ -205,7 +217,7 @@ export default function About({ detailed = false }: AboutProps) {
                 </span>
               </div>
             </div>
-          </div>
+          </motion.div>
 
         </div>
 
