@@ -33,7 +33,16 @@ export default function NetflixRow({
   shineBorder = false,
   slideDirection = 'left'
 }: NetflixRowProps) {
-  const duplicatedProjects = [...projects, ...projects, ...projects, ...projects, ...projects, ...projects];
+  const duplicatedProjects = (() => {
+    if (projects.length === 0) return [];
+    const minItems = 12;
+    const repeatCount = Math.max(2, Math.ceil(minItems / projects.length));
+    const result: Project[] = [];
+    for (let i = 0; i < repeatCount; i++) {
+      result.push(...projects);
+    }
+    return result;
+  })();
 
   return (
     <motion.div
@@ -230,25 +239,16 @@ function ProjectCard({
         isVertical ? 'aspect-[9/16]' : 'aspect-video'
       } ${!shineBorder && isHovered ? 'shadow-[0_20px_40px_rgba(229,9,20,0.35)] border-netflix-red/30 scale-[1.03] z-20' : ''}`}
     >
-      {/* Lazy-mount video element on hover, otherwise show lightweight thumbnail image */}
-      {isHovered ? (
-        <video
-          src={`${project.videoUrl}#t=2`}
-          muted
-          loop
-          playsInline
-          autoPlay
-          controls
-          className="absolute inset-0 w-full h-full object-cover z-0"
-        />
-      ) : (
-        <img
-          src={project.thumbnailUrl}
-          alt={project.title}
-          className="absolute inset-0 w-full h-full object-cover z-0 filter brightness-[0.85] contrast-[1.02]"
-          loading="lazy"
-        />
-      )}
+      <video
+        src={`${project.videoUrl}#t=2`}
+        poster={project.thumbnailUrl}
+        muted
+        loop
+        playsInline
+        autoPlay
+        controls={isHovered}
+        className="absolute inset-0 w-full h-full object-cover z-0"
+      />
 
       {/* Video Overlay Tint (Hidden on hover when controls are active for clean interaction) */}
       <div className={`absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent transition-opacity duration-300 z-10 ${

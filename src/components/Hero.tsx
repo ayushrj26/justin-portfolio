@@ -39,7 +39,7 @@ export default function Hero({ onWatchShowreel, onViewPortfolio }: HeroProps) {
   ];
 
   return (
-    <section id="hero" className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-dark-bg select-none pt-20">
+    <section id="hero" className="relative w-full min-h-screen flex items-end sm:items-center justify-center overflow-hidden bg-dark-bg select-none pt-20 pb-16 sm:pb-0">
       {/* Background Cinematic Image Canvas */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
         <img
@@ -54,6 +54,22 @@ export default function Hero({ onWatchShowreel, onViewPortfolio }: HeroProps) {
         <div className="absolute inset-0 bg-gradient-to-r from-dark-bg/90 via-dark-bg/40 to-transparent z-10" />
         <div className="absolute inset-0 bg-radial-gradient(circle at 30% 50%, transparent, rgba(11,11,11,0.5) 80%) z-10" />
       </div>
+
+      {/* Floating Availability Pill below Navbar */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.3 }}
+        className="absolute top-24 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.3)] select-none hover:border-green-500/30 transition-all duration-300 group/pill whitespace-nowrap"
+      >
+        <span className="relative flex h-2.5 w-2.5 shrink-0">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500 shadow-[0_0_10px_#10B981]"></span>
+        </span>
+        <span className="text-[10px] sm:text-xs font-mono font-bold tracking-widest text-gray-300 uppercase whitespace-nowrap">
+          Available for projects
+        </span>
+      </motion.div>
 
       {/* Hero Content Wrapper */}
       <div className="relative w-full max-w-7xl mx-auto px-6 md:px-12 grid lg:grid-cols-12 gap-12 items-center z-20">
